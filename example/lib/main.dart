@@ -1,4 +1,5 @@
 import 'package:example/app_colors.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
@@ -15,7 +16,8 @@ class MySample extends StatefulWidget {
 class MySampleState extends State<MySample> {
   bool isLightTheme = false;
   String cardNumber = '';
-  String expiryDate = '';
+  String? expiryMonth;
+  String? expiryYear;
   String cardHolderName = '';
   String cvvCode = '';
   bool isCvvFocused = false;
@@ -24,7 +26,7 @@ class MySampleState extends State<MySample> {
   bool useFloatingAnimation = true;
   final OutlineInputBorder border = OutlineInputBorder(
     borderSide: BorderSide(
-      color: Colors.grey.withOpacity(0.7),
+      color: Colors.grey.withValues(alpha: 255.0 * 0.7),
       width: 2.0,
     ),
   );
@@ -47,7 +49,7 @@ class MySampleState extends State<MySample> {
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
           seedColor: Colors.white,
-          background: Colors.black,
+          surface: Colors.black,
           // Defines colors like cursor color of the text fields.
           primary: Colors.black,
         ),
@@ -67,7 +69,7 @@ class MySampleState extends State<MySample> {
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
           seedColor: Colors.black,
-          background: Colors.white,
+          surface: Colors.white,
           // Defines colors like cursor color of the text fields.
           primary: Colors.white,
         ),
@@ -108,7 +110,7 @@ class MySampleState extends State<MySample> {
                       enableFloatingCard: useFloatingAnimation,
                       glassmorphismConfig: _getGlassmorphismConfig(),
                       cardNumber: cardNumber,
-                      expiryDate: expiryDate,
+                      expiryDate: '$expiryMonth/$expiryYear',
                       cardHolderName: cardHolderName,
                       cvvCode: cvvCode,
                       bankName: 'Axis Bank',
@@ -155,11 +157,13 @@ class MySampleState extends State<MySample> {
                               isCardNumberVisible: true,
                               isExpiryDateVisible: true,
                               cardHolderName: cardHolderName,
-                              expiryDate: expiryDate,
+                              expiryMonth: expiryMonth,
+                              expiryYear: expiryYear,
                               inputConfiguration: const InputConfiguration(
                                 cardNumberDecoration: InputDecoration(
                                   labelText: 'Number',
                                   hintText: 'XXXX XXXX XXXX XXXX',
+                                  prefixIcon: Icon(Icons.credit_card, size: 32)
                                 ),
                                 expiryDateDecoration: InputDecoration(
                                   labelText: 'Expired Date',
@@ -168,9 +172,11 @@ class MySampleState extends State<MySample> {
                                 cvvCodeDecoration: InputDecoration(
                                   labelText: 'CVV',
                                   hintText: 'XXX',
+                                  prefixIcon: Icon(Icons.key, size: 32)
                                 ),
                                 cardHolderDecoration: InputDecoration(
                                   labelText: 'Card Holder',
+                                  prefixIcon: Icon(Icons.person, size: 32)
                                 ),
                               ),
                               onCreditCardModelChange: onCreditCardModelChange,
@@ -292,9 +298,13 @@ class MySampleState extends State<MySample> {
 
   void _onValidate() {
     if (formKey.currentState?.validate() ?? false) {
-      print('valid!');
+      if (kDebugMode) {
+        print('valid!');
+      }
     } else {
-      print('invalid!');
+      if (kDebugMode) {
+        print('invalid!');
+      }
     }
   }
 
@@ -318,7 +328,8 @@ class MySampleState extends State<MySample> {
   void onCreditCardModelChange(CreditCardModel creditCardModel) {
     setState(() {
       cardNumber = creditCardModel.cardNumber;
-      expiryDate = creditCardModel.expiryDate;
+      expiryMonth = creditCardModel.expiryMonth;
+      expiryYear = creditCardModel.expiryYear;
       cardHolderName = creditCardModel.cardHolderName;
       cvvCode = creditCardModel.cvvCode;
       isCvvFocused = creditCardModel.isCvvFocused;

@@ -8,16 +8,15 @@ class Validators {
         : null;
   }
 
-  static String? expiryDateValidator(String? value, String errorMsg) {
-    if (value?.isEmpty ?? true) {
+  static String? expiryDateValidator(String? expMonth, String? expYear, String errorMsg) {
+    if ((expMonth?.isEmpty ?? true) || (expYear?.isEmpty ?? true)) {
       return errorMsg;
     }
 
     final DateTime now = DateTime.now();
-    final List<String> date = value!.split(RegExp(r'/'));
 
-    final int month = int.parse(date.first);
-    final int year = int.parse('20${date.last}');
+    final int month = int.parse(expMonth!);
+    final int year = int.parse(expYear!);
 
     final int lastDayOfMonth = month < 12
         ? DateTime(year, month + 1, 0).day
