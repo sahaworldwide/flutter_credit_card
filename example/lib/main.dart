@@ -26,7 +26,7 @@ class MySampleState extends State<MySample> {
   bool useFloatingAnimation = true;
   final OutlineInputBorder border = OutlineInputBorder(
     borderSide: BorderSide(
-      color: Colors.grey.withValues(alpha: 255.0 * 0.7),
+      color: Colors.grey.withOpacity(0.7),
       width: 2.0,
     ),
   );
@@ -49,7 +49,7 @@ class MySampleState extends State<MySample> {
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.light,
           seedColor: Colors.white,
-          surface: Colors.black,
+          background: Colors.black,
           // Defines colors like cursor color of the text fields.
           primary: Colors.black,
         ),
@@ -69,7 +69,7 @@ class MySampleState extends State<MySample> {
         colorScheme: ColorScheme.fromSeed(
           brightness: Brightness.dark,
           seedColor: Colors.black,
-          surface: Colors.white,
+          background: Colors.white,
           // Defines colors like cursor color of the text fields.
           primary: Colors.white,
         ),
@@ -110,7 +110,7 @@ class MySampleState extends State<MySample> {
                       enableFloatingCard: useFloatingAnimation,
                       glassmorphismConfig: _getGlassmorphismConfig(),
                       cardNumber: cardNumber,
-                      expiryDate: '$expiryMonth/$expiryYear',
+                      expiryDate: (expiryMonth?.isEmpty ?? true) || (expiryYear?.isEmpty ?? true) ? '' : '$expiryMonth/$expiryYear',
                       cardHolderName: cardHolderName,
                       cvvCode: cvvCode,
                       bankName: 'Axis Bank',
